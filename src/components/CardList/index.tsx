@@ -4,10 +4,6 @@ import Database from '../../database';
 import Card from '../Card';
 import styles from './style';
 
-interface Props {
-    onPress: (type: 'view' | 'edit' | 'add' | null, id: string) => void;
-}
-
 interface Item {
     id: string;
     name: string;
@@ -27,7 +23,7 @@ interface RenderItem {
  *
  * CardList Homescreen
  */
-const CardList: FC<Props> = ({ onPress }) => {
+const CardList: FC = () => {
     const [items, setItems] = useState<Item[]>([]);
 
     useEffect(() => {
@@ -53,7 +49,6 @@ const CardList: FC<Props> = ({ onPress }) => {
      */
     const renderCard = ({ item, index }: RenderItem): JSX.Element => (
         <Card
-            onItemPress={(id) => onPress('view', id)}
             id={item.id}
             name={item.name}
             location={item.location}

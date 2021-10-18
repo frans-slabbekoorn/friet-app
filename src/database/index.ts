@@ -6,7 +6,13 @@ import executeMigrations from './migrations';
 import { search, insert, deleteRow, update } from './query';
 
 interface Item {
-    [index: number]: string | null | number;
+    id?: string;
+    name: string;
+    location: string;
+    stars: number;
+    image_url: string | null;
+    positives: string[];
+    negatives: string[];
 }
 
 /**
@@ -49,12 +55,8 @@ export default class Database {
             table: 'negatives',
             where: { items_id: item[0].id },
         });
-        positives.forEach(
-            (positive: any, i: number) => (positives[i] = positive.positive),
-        );
-        negatives.forEach(
-            (negative: any, i: number) => (negatives[i] = negative.negative),
-        );
+        positives.forEach((positive: any, i: number) => (positives[i] = positive.positive));
+        negatives.forEach((negative: any, i: number) => (negatives[i] = negative.negative));
 
         return [item[0], positives, negatives];
     };
@@ -123,32 +125,27 @@ export default class Database {
      *
      * @param { array, array, array }
      */
-    insertItem = async (
-        item: Item,
-        positives: string[] = [],
-        negatives: string[] = [],
-    ): Promise<void> => {
+    insertItem = async (item: Item): Promise<void> => {
         const checkForItem: object[] = await search({
             table: 'items',
             select: ['id'],
-            where: { name: item[0] },
+            where: { name: item.name },
         });
         if (checkForItem.length > 0) return;
 
         const id: string = uuidv4();
-
         try {
             await insert('items', [
                 {
                     id: id,
-                    name: item[0],
-                    location: item[1],
-                    image_url: item[2],
-                    stars: item[3],
+                    name: item.name,
+                    location: item.location,
+                    image_url: item.image_url,
+                    stars: item.stars,
                 },
             ]);
 
-            positives.forEach(async (positive: string) => {
+            item.positives.forEach(async (positive: string) => {
                 await insert('positives', [
                     {
                         id: uuidv4(),
@@ -158,7 +155,7 @@ export default class Database {
                 ]);
             });
 
-            negatives.forEach(async (negative: string) => {
+            item.negatives.forEach(async (negative: string) => {
                 await insert('negatives', [
                     {
                         id: uuidv4(),
@@ -179,27 +176,23 @@ export default class Database {
      * Change item based on id in item
      * @param { array, array, array }
      */
-    changeItem = async (
-        item: Item = [],
-        positives: string[] = [],
-        negatives: string[] = [],
-    ): Promise<any> => {
+    changeItem = async (item: Item): Promise<any> => {
         try {
             await update(
                 'items',
                 {
-                    name: item[1],
-                    location: item[2],
-                    image_url: item[3],
-                    stars: item[4],
+                    name: item.name,
+                    location: item.location,
+                    image_url: item.image_url,
+                    stars: item.stars,
                 },
-                { id: item[0] },
+                { id: item.id },
             );
-            positives.forEach(async (positive: string) => {
+            item.positives.forEach(async (positive: string) => {
                 const positiveExists: any[] = await search({
                     table: 'positives',
                     select: ['positive'],
-                    where: { items: item[0], positive: positive },
+                    where: { items: item.id, positive: positive },
                 });
 
                 positiveExists.length > 0
@@ -209,24 +202,24 @@ export default class Database {
                               positive: positive,
                           },
                           {
-                              items_id: item[0],
+                              items_id: item.id,
                               positive: positiveExists[0].positive,
                           },
                       )
                     : await insert('positives', [
                           {
                               id: uuidv4(),
-                              items_id: item[0],
+                              items_id: item.id,
                               positive: positive,
                           },
                       ]);
             });
 
-            negatives.forEach(async (negative: string) => {
+            item.negatives.forEach(async (negative: string) => {
                 const negativeExists: any[] = await search({
                     table: 'negatives',
                     select: ['negative'],
-                    where: { items: item[0], negative: negative },
+                    where: { items: item.id, negative: negative },
                 });
 
                 negativeExists.length > 0
@@ -236,14 +229,14 @@ export default class Database {
                               negative: negative,
                           },
                           {
-                              items_id: item[0],
+                              items_id: item.id,
                               negative: negativeExists[0].negative,
                           },
                       )
                     : await insert('negatives', [
                           {
                               id: uuidv4(),
-                              items_id: item[0],
+                              items_id: item.id,
                               negative: negative,
                           },
                       ]);

@@ -13,5 +13,7 @@ export default {
         gradient: require('../assets/images/miscellaneous/gradient.png'),
         logo: require('../assets/images/miscellaneous/logo.png'),
         search: require('../assets/images/miscellaneous/search.png'),
+        done: require('../assets/images/miscellaneous/done.png'),
+        close: require('../assets/images/miscellaneous/close.png'),
     },
 };

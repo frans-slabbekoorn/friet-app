@@ -13,6 +13,7 @@ export enum Colors {
     white = '#FFFFFF',
     black = '#000000',
     lightGrey = '#EBEBEB',
+    grey = '#EBEBEB',
     yellow = '#FFDB7B',
     red = '#D20000',
 }
@@ -29,4 +30,8 @@ export default StyleSheet.create({
         backgroundColor: Colors.lightGrey,
         flex: 1,
     },
+    button: {},
+    buttonIcon: {},
+    buttonPos: {},
+    addIcon: {},
 });

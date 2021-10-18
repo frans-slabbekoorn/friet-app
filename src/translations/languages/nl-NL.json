@@ -4,7 +4,7 @@
   "edit": "Bewerken",
   "search": "Zoeken...",
   "delete": "Verwijderen",
-  "addTitle": "Voeg titel toe",
+  "addName": "Voeg naam toe",
   "noResult": "Geen resultaat",
   "negatives": "Minpunten",
   "positives": "Pluspunten",
@@ -14,5 +14,8 @@
   "itemExists": "Er bestaat al een item met deze naam!",
   "addLocation": "Voeg locatie toe",
   "errorTryAgain": "Er is een fout opgetreden! Probeer het opnieuw",
-  "noNameSubmitted": "Zorg dat een item een naam heeft!"
+  "noNameSubmitted": "Zorg dat een item een naam heeft!",
+  "takePhoto": "Foto nemen",
+  "choosePhoto": "Foto uit gallerij",
+  "cancel": "Annuleren"
 }

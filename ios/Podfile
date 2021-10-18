@@ -3,14 +3,14 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'FrietApp' do
+target 'frietapp' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
-  target 'FrietAppTests' do
+  target 'frietappTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -25,10 +25,10 @@ target 'FrietApp' do
   end
 end
 
-target 'FrietApp-tvOS' do
-  # Pods for FrietApp-tvOS
+target 'frietapp-tvOS' do
+  # Pods for frietapp-tvOS
 
-  target 'FrietApp-tvOSTests' do
+  target 'frietapp-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

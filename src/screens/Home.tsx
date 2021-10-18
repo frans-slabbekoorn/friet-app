@@ -1,53 +1,30 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Platform, KeyboardAvoidingView, StatusBar } from 'react-native';
+import React, { FC, useContext } from 'react';
+import { Platform, KeyboardAvoidingView, StatusBar, TouchableOpacity, Image } from 'react-native';
 import Header from '../components/Header';
 import CardList from '../components/CardList';
-import Slider from '../components/Slider';
 import styles, { Colors } from '../styles';
 import { TranslateContext } from '../functions/TranslateContext';
 import { getLanguage } from '../translations';
+import { useSlider } from '../hooks/useSlider';
+import { AlertContext } from '../contexts/AlertContext';
+import { AlertProps } from '../types/Alert';
+import image from '../functions/image';
+import Alert from '../components/Alert';
 
 const Home: FC = () => {
-    const [sliderType, setSliderType] = useState<
-        'view' | 'edit' | 'add' | null
-    >();
-    const [itemId, setItemId] = useState<string>();
-    const [language, setLanguage] = useState<any>();
-
-    useEffect(() => {
-        fetchLanguage();
-    }, []);
-
-    const fetchLanguage = async () => {
-        setLanguage(await getLanguage());
-    };
+    const { setSliderType } = useSlider();
+    const {show, title, values, onClose} = useContext(AlertContext) as AlertProps;
 
     return (
-        <TranslateContext.Provider value={language}>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={styles.container}>
-                <Header />
-                <CardList
-                    onPress={(type, id: string) => {
-                        setSliderType(type);
-                        setItemId(id);
-                    }}
-                />
-                <Slider
-                    id={itemId}
-                    type={sliderType}
-                    onClose={() => {
-                        setItemId('');
-                        setSliderType(null);
-                    }}
-                />
-                <StatusBar
-                    backgroundColor={Colors.yellow}
-                    barStyle="dark-content"
-                />
-            </KeyboardAvoidingView>
-        </TranslateContext.Provider>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+            <Header />
+            <CardList />
+            <TouchableOpacity style={{ ...styles.button, ...styles.buttonPos }} onPress={() => setSliderType('add')}><Image source={image.miscellaneous.close} style={{...styles.buttonIcon, ...styles.addIcon }} /></TouchableOpacity>
+            {/* <Alert
+            show={show} title={title} values={values} onClose={onClose}
+            /> */}
+            <StatusBar backgroundColor={Colors.yellow} barStyle="dark-content" />
+        </KeyboardAvoidingView>
     );
 };
 

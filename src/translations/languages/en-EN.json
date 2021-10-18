@@ -4,7 +4,7 @@
   "edit": "Edit",
   "search": "Search...",
   "delete": "Delete",
-  "addTitle": "Add title",
+  "addName": "Add name",
   "noResult": "No result",
   "negatives": "Negatives",
   "positives": "Positives",
@@ -14,5 +14,8 @@
   "itemExists": "This name is already in use!",
   "addLocation": "Add location",
   "errorTryAgain": "Something went wrong! Try again",
-  "noNameSubmitted": "A title is required!"
+  "noNameSubmitted": "A title is required!",
+  "takePhoto": "Take Photo",
+  "choosePhoto": "Choose from library",
+  "cancel": "Cancel"
 }
