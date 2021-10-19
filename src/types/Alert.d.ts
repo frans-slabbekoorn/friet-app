@@ -1,8 +1,9 @@
+// Package imports
 import React from 'react';
 
 export interface AlertOption {
     title: string;
-    onPress: () => null;
+    onPress: () => void;
 }
 
 export interface AlertProps {
@@ -12,6 +13,4 @@ export interface AlertProps {
     setTitle: React.Dispatch<React.SetStateAction<string>>;
     values: AlertOption[];
     setValues: React.Dispatch<React.SetStateAction<AlertOption[]>>;
-    onClose: () => null;
-    setOnClose: React.Dispatch<React.SetStateAction<() => null>>;
 }

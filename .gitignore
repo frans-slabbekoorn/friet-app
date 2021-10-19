@@ -62,10 +62,5 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-# Prettier
-.prettierrc.js
-
 # Buck Config
 .buckconfig
-
-.eslintrc.js

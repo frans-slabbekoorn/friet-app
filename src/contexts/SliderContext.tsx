@@ -1,14 +1,21 @@
+// Package imports
 import React, { createContext, useState, useEffect, FC, useRef } from 'react';
 import { Dimensions, Platform } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { BlurView } from '@react-native-community/blur';
-import AddSliderContent from '../components/AddSliderContent';
-import ViewSliderContent from '../components/ViewSliderContent';
-import ChooseImageContent from '../components/ChooseImageContent';
-import style from '../components/Slider/styles';
-import { Colors } from '../styles';
-import { SliderContent, SliderType } from '../types/Slider';
-import { FormData } from '../types/Form';
+
+// Component imports
+import AddSliderContent from '@components/AddSliderContent';
+import ViewSliderContent from '@components/ViewSliderContent';
+import ChooseImageContent from '@components/ChooseImageContent';
+
+// Style imports
+import { Colors } from '@styles/variables';
+import styles from '@components/Slider/styles';
+
+// Type imports
+import { SliderContent, SliderType } from '@custom-types/Slider';
+import { InsertItem } from '@custom-types/Item';
 
 interface Props {
     children: JSX.Element;
@@ -30,7 +37,7 @@ const SliderContext = createContext<SliderContent>({
     formData: {
         name: '',
         location: '',
-        stars: 0,
+        stars: 6,
         image_url: null,
         positives: [],
         negatives: [],
@@ -51,11 +58,11 @@ const SliderProvider: FC<Props> = ({ children }): JSX.Element => {
     const [currentId, setCurrentId] = useState<string>('');
     const [height, setHeight] = useState<number>(0);
     const [sliderContent, setSliderContent] = useState<JSX.Element | null>(null);
-    const [isAlwaysOpen, setIsAlwaysOpen] = useState<boolean>(false);
-    const [formData, setFormData] = useState<FormData>({
+    const [isLocked, setIsLocked] = useState<boolean>(false);
+    const [formData, setFormData] = useState<InsertItem>({
         name: '',
         location: '',
-        stars: 0,
+        stars: 6,
         image_url: null,
         positives: [],
         negatives: [],
@@ -78,6 +85,7 @@ const SliderProvider: FC<Props> = ({ children }): JSX.Element => {
             ref.current?.open();
         },
         chooseImage: () => {
+            setIsLocked(true);
             setSliderContent(<ChooseImageContent />);
             setHeight(Dimensions.get('window').height * 0.45);
             ref.current?.open();
@@ -93,7 +101,7 @@ const SliderProvider: FC<Props> = ({ children }): JSX.Element => {
         setFormData({ ...formData, ...mutatableObject });
 
     const setSliderType = (newType: SliderType) => {
-        setIsAlwaysOpen(false);
+        setIsLocked(false);
         setPreviousType(type);
         setType(newType);
     };
@@ -119,15 +127,16 @@ const SliderProvider: FC<Props> = ({ children }): JSX.Element => {
                 <BlurView
                     blurType="light"
                     blurAmount={10}
-                    style={[style.blur, { zIndex: sliderContent ? 1 : -1 }]}
+                    style={[styles.blur, { zIndex: sliderContent ? 1 : -1 }]}
                     reducedTransparencyFallbackColor={Colors.white}
                 />
                 <Modalize
                     keyboardAvoidingBehavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                     modalHeight={height}
-                    overlayStyle={{backgroundColor: "rgba(0,0,0,0)"}}
+                    overlayStyle={{ backgroundColor: 'rgba(0,0,0,0)' }}
                     ref={ref}
-                    alwaysOpen={isAlwaysOpen ? height : undefined}
+                    panGestureEnabled={!isLocked}
+                    closeOnOverlayTap={!isLocked}
                     onClosed={() => {
                         setSliderType('null');
                         setCurrentId('');

@@ -1,4 +1,5 @@
-import { FormData } from './Form';
+// Type imports
+import { InsertItem } from '@custom-types/Item';
 
 export type SliderType = 'view' | 'edit' | 'add' | 'chooseImage' | 'null';
 
@@ -7,6 +8,6 @@ export interface SliderContent {
     setCurrentId: (id: string) => void;
     updateFormState: (mutatableObject: { [key: string]: unknown }) => void;
     closeSlider: () => void;
-    formData: FormData;
+    formData: InsertItem;
     previousType: SliderType;
 }

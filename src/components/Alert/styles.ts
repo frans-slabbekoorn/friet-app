@@ -1,5 +1,8 @@
+// Package imports
 import { Dimensions, StyleSheet } from 'react-native';
-import { Colors, fonts } from '../../styles';
+
+// Style imports
+import { Colors, fonts } from '@styles/variables';
 
 export default StyleSheet.create({
     blur: {
@@ -42,6 +45,20 @@ export default StyleSheet.create({
         width: '100%',
         borderTopWidth: 0.5,
         borderColor: Colors.grey,
+    },
+    buttonItem: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+    },
+    buttonRightBorder: {
+        borderRightWidth: 0.25,
+        borderRightColor: Colors.grey,
+    },
+    buttonLeftBorder: {
+        borderLeftWidth: 0.25,
+        borderRightColor: Colors.grey,
     },
     buttonsText: {
         fontFamily: fonts.poppins.semiBold,

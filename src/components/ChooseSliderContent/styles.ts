@@ -1,5 +1,8 @@
+// Package imports
 import { Dimensions, StyleSheet } from 'react-native';
-import { Colors, fonts } from '../../styles';
+
+// Style imports
+import { Colors, fonts } from '@styles/variables';
 
 export default StyleSheet.create({
     chooseSliderContainer: {

@@ -1,5 +1,8 @@
+// Package imports
 import React, { createContext, useState, useEffect, FC } from 'react';
-import { fallbackLanguage, getLanguage } from '../translations';
+
+// Custom imports
+import { fallbackLanguage, getLanguage } from '@config/translations';
 
 interface Props {
     children: JSX.Element;

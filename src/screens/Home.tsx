@@ -1,28 +1,47 @@
-import React, { FC, useContext } from 'react';
+// Package imports
+import React, { FC, useContext, useEffect } from 'react';
 import { Platform, KeyboardAvoidingView, StatusBar, TouchableOpacity, Image } from 'react-native';
-import Header from '../components/Header';
-import CardList from '../components/CardList';
-import styles, { Colors } from '../styles';
-import { TranslateContext } from '../functions/TranslateContext';
-import { getLanguage } from '../translations';
-import { useSlider } from '../hooks/useSlider';
-import { AlertContext } from '../contexts/AlertContext';
-import { AlertProps } from '../types/Alert';
-import image from '../functions/image';
-import Alert from '../components/Alert';
 
-const Home: FC = () => {
+// Component imports
+import Header from '@components/Header';
+import CardList from '@components/CardList';
+import Alert from '@components/Alert';
+
+// Context imports
+import { AlertContext } from '@contexts/AlertContext';
+
+// Hook imports
+import { useSlider } from '@hooks/useSlider';
+
+// Function imports
+import image from '@functions/image';
+
+// Style imports
+import styles from '@styles/defaults';
+import { Colors } from '@styles/variables';
+
+// Type imports
+import { AlertProps } from '@custom-types/Alert';
+
+const Home: FC = (): JSX.Element => {
     const { setSliderType } = useSlider();
-    const {show, title, values, onClose} = useContext(AlertContext) as AlertProps;
+    const { show, title, values } = useContext(AlertContext) as AlertProps;
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.container}>
             <Header />
+            <Alert show={show} title={title} values={values} />
             <CardList />
-            <TouchableOpacity style={{ ...styles.button, ...styles.buttonPos }} onPress={() => setSliderType('add')}><Image source={image.miscellaneous.close} style={{...styles.buttonIcon, ...styles.addIcon }} /></TouchableOpacity>
-            {/* <Alert
-            show={show} title={title} values={values} onClose={onClose}
-            /> */}
+            <TouchableOpacity
+                style={[styles.button, styles.buttonPos]}
+                onPress={() => setSliderType('add')}>
+                <Image
+                    source={image.miscellaneous.close}
+                    style={[styles.buttonIcon, styles.addIcon]}
+                />
+            </TouchableOpacity>
             <StatusBar backgroundColor={Colors.yellow} barStyle="dark-content" />
         </KeyboardAvoidingView>
     );

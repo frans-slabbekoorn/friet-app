@@ -1,4 +1,7 @@
+// Package imports
 import { createContext } from 'react';
-import { AlertProps as AlertContextProps } from '../types/Alert';
+
+// Type imports
+import { AlertProps as AlertContextProps } from '@custom-types/Alert';
 
 export const AlertContext = createContext<Partial<AlertContextProps>>({});

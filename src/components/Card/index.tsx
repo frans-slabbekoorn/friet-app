@@ -1,49 +1,54 @@
+// Package imports
 import React, { FC } from 'react';
-import {
-    TouchableOpacity,
-    TouchableNativeFeedback,
-    View,
-    Text,
-    Image,
-    ImageSourcePropType,
-} from 'react-native';
-import styles from './style';
-import { Colors } from '../../styles';
-import ReviewStars from '../ReviewStars';
-import { useSlider } from '../../hooks/useSlider';
+import { TouchableOpacity, TouchableNativeFeedback, View, Text, Image } from 'react-native';
+
+// Component imports
+import ReviewStars from '@components/ReviewStars';
+
+// Hook imports
+import { useSlider } from '@hooks/useSlider';
+
+// Function imports
+import image from '@functions/image';
+
+// Style imports
+import { Colors } from '@styles/variables';
+import styles from './styles';
 
 interface Props {
     id: string;
     name: string;
-    imageSource: ImageSourcePropType | null;
+    image_url: string | null;
     location: string | null;
     stars: number;
     firstItem: boolean;
 }
 
-const defaultImage: ImageSourcePropType = require('../../assets/images/miscellaneous/default-image.png');
-
 /**
  * Card React Native Functional Component
  *
  * @param { object } props
+ * @returns { JSX.Element }
  */
-const Card: FC<Props> = ({ id, name, imageSource, location, stars, firstItem }) => {
+const Card: FC<Props> = ({ id, name, image_url, location, stars, firstItem }): JSX.Element => {
     const { setSliderType, setCurrentId } = useSlider();
 
     const handlePress = () => {
         setSliderType('view');
         setCurrentId(id);
     };
-    
+
     return (
         <TouchableOpacity
             activeOpacity={1}
-            style={[styles.cardContainer, firstItem ? styles.spaceCardContainer : {}]}
+            style={[styles.cardContainer, firstItem && styles.spaceCardContainer]}
             onPress={handlePress}>
             <View style={styles.card}>
                 <View style={styles.cardImageContainer}>
-                    <Image source={imageSource || defaultImage} style={styles.cardImage} />
+                    <Image
+                        source={image_url ? { uri: image_url } : image.miscellaneous.defaultImage}
+                        style={image_url ? styles.cardImage : styles.cardImageFallback}
+                    />
                 </View>
                 <View style={styles.cardContentWrapper}>
                     <View>

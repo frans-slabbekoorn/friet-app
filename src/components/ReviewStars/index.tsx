@@ -1,8 +1,13 @@
+// Package imports
 import React, { FC, useEffect, useState } from 'react';
 import { View, Image, ImageSourcePropType } from 'react-native';
-import { v4 as uuidv4 } from 'uuid';
-import images from '../../functions/image';
-import styles from './style';
+import { v4 as uuid } from 'uuid';
+
+// Function imports
+import images from '@functions/image';
+
+// Style imports
+import styles from './styles';
 
 interface Props {
     stars: number;
@@ -41,7 +46,7 @@ const ReviewStars: FC<Props> = ({ stars, starStyle }) => {
 
         return (
             <Image
-                key={uuidv4()}
+                key={uuid()}
                 source={source[imageIndex]}
                 style={starStyle}
             />

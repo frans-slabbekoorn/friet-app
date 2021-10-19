@@ -1,9 +1,19 @@
+// Package imports
 import React, { FC } from 'react';
-import { useSlider } from '../../hooks/useSlider';
-import { useTranslate } from '../../hooks/useTranslate';
-import ChooseSliderContent from '../ChooseSliderContent';
 import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
+// Component imports
+import ChooseSliderContent from '@components/ChooseSliderContent';
+
+// Hook imports
+import { useTranslate } from '@hooks/useTranslate';
+import { useSlider } from '@hooks/useSlider';
+
+/**
+ * ChooseImageContent component
+ * 
+ * @returns { JSX.Element }
+ */
 const ChooseImageContent: FC = (): JSX.Element => {
     const { language } = useTranslate();
     const { setSliderType, updateFormState } = useSlider();

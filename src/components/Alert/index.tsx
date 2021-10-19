@@ -1,39 +1,42 @@
-import { BlurView } from '@react-native-community/blur';
+// Package imports
 import React, { FC, useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { Colors } from '../../styles';
-import { AlertOption } from '../../types/Alert';
+import { BlurView } from '@react-native-community/blur';
 import { v4 as uuid } from 'uuid';
+
+// Style imports
+import { Colors } from '@styles/variables';
 import styles from './styles';
+
+// Type imports
+import { AlertOption } from '@custom-types/Alert';
 
 interface Props {
     show: boolean;
     title: string;
     values: AlertOption[];
-    onClose: () => null;
+    onClose?: () => void;
 }
 
+/**
+ * Alert component
+ *
+ * Alert covering entire screen
+ * @param { Props }
+ * @returns { JSX.Element }
+ */
 const Alert: FC<Props> = ({ show, title, values, onClose }): JSX.Element => {
-    const [alertShow, setAlertShow] = useState<boolean>(false);
-
-    useEffect(() => {
-        setAlertShow(show);
-    }, [show]);
-
     return (
         <>
             <BlurView
                 blurType="light"
                 blurAmount={10}
-                style={[styles.blur, { zIndex: alertShow ? 9998 : -1 }]}
+                style={[styles.blur, { zIndex: show ? 9998 : -1 }]}
                 reducedTransparencyFallbackColor={Colors.white}
             />
             <TouchableOpacity
-                onPress={() => {
-                    setAlertShow(false);
-                    onClose();
-                }}
-                style={alertShow ? styles.alertContainer : styles.hidden}>
+                onPress={onClose}
+                style={show ? styles.alertContainer : styles.hidden}>
                 <TouchableOpacity style={styles.alertBox} activeOpacity={1}>
                     <View style={styles.textBox}>
                         <Text>{title}</Text>
@@ -42,23 +45,15 @@ const Alert: FC<Props> = ({ show, title, values, onClose }): JSX.Element => {
                         {values.map((value, i, arr) => (
                             <TouchableOpacity
                                 key={uuid()}
-                                style={{
-                                    flex: 1,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    height: '100%',
-                                    ...(i !== arr.length - 1 &&
-                                        arr.length !== 1 && {
-                                            borderRightWidth: 0.25,
-                                            borderRightColor: Colors.grey,
-                                        }),
-                                    ...(i > 0 && {
-                                        borderLeftWidth: 0.25,
-                                        borderRightColor: Colors.grey,
-                                    }),
-                                }}
+                                style={[
+                                    styles.buttonItem,
+                                    i > 0 && styles.buttonLeftBorder,
+                                    i !== arr.length - 1 &&
+                                        arr.length !== 1 &&
+                                        styles.buttonRightBorder,
+                                ]}
                                 onPress={value.onPress}>
-                                <Text>{value.title}</Text>
+                                <Text style={styles.buttonsText}>{value.title}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>

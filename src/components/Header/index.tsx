@@ -1,26 +1,29 @@
+// Package imports
 import React, { FC } from 'react';
-import { View, Image, ImageSourcePropType } from 'react-native';
-import styles from './style';
+import { View, Image } from 'react-native';
 
-const gradient: ImageSourcePropType = require('../../assets/images/miscellaneous/gradient.png');
-const icon: ImageSourcePropType = require('../../assets/images/miscellaneous/logo.png');
+// Function imports
+import image from '@functions/image';
+
+// Style imports
+import styles from './styles';
 
 /**
- * Header React Native Functional Component
+ * Header component
  *
- * Header Homescreen
+ * @returns { JSX.Element }
  */
-const Header: FC = () => {
+const Header: FC = (): JSX.Element => {
     return (
         <>
             <View style={styles.headerBackground} />
             <Image
                 style={styles.headerGradient}
                 resizeMode="stretch"
-                source={gradient}
+                source={image.miscellaneous.gradient}
             />
             <View style={styles.headerImageContainer}>
-                <Image style={styles.headerImage} source={icon} />
+                <Image style={styles.headerImage} source={image.miscellaneous.logo} />
             </View>
         </>
     );

@@ -1,30 +1,29 @@
-import React, { FC, useEffect, useState } from 'react';
-import { FlatList, ImageSourcePropType } from 'react-native';
-import Database from '../../database';
-import Card from '../Card';
-import styles from './style';
+// Package imports
+import React, { FC, useContext, useEffect, useState } from 'react';
+import { FlatList } from 'react-native';
 
-interface Item {
-    id: string;
-    name: string;
-    imageSource: ImageSourcePropType | null;
-    location: string | null;
-    stars: number;
-    firstItem: boolean;
-}
+// Component imports
+import Card from '@components/Card';
 
-interface RenderItem {
-    item: Item;
-    index: number;
-}
+// Context imports
+import { ItemContext } from '@contexts/ItemContext';
+
+// Style imports
+import styles from './styles';
+
+// Type imports
+import { Items, ItemContextProps } from '@custom-types/Item';
+
+// Custom imports
+import Database from '@config/database';
 
 /**
- * CardList React Native Functional Component
+ * CardList component
  *
- * CardList Homescreen
+ * @returns { JSX.Element }
  */
-const CardList: FC = () => {
-    const [items, setItems] = useState<Item[]>([]);
+const CardList: FC = (): JSX.Element => {
+    const { items, setItems } = useContext(ItemContext) as ItemContextProps;
 
     useEffect(() => {
         fetchItems();
@@ -37,7 +36,7 @@ const CardList: FC = () => {
      */
     const fetchItems = async (): Promise<void> => {
         const db: Database = new Database();
-        const currentItems: Item[] = await db.getItems();
+        const currentItems: Items = await db.getItems();
         setItems(currentItems);
     };
 
@@ -47,12 +46,12 @@ const CardList: FC = () => {
      * @param { object }
      * @returns { JSX.Element } Card
      */
-    const renderCard = ({ item, index }: RenderItem): JSX.Element => (
+    const renderCard = ({ item, index }: any): JSX.Element => (
         <Card
             id={item.id}
             name={item.name}
             location={item.location}
-            imageSource={item.imageSource}
+            image_url={item.image_url}
             stars={item.stars}
             firstItem={index === 0}
         />
@@ -62,7 +61,7 @@ const CardList: FC = () => {
         <FlatList
             data={items}
             renderItem={renderCard}
-            keyExtractor={(item) => item.id}
+            keyExtractor={item => item.id}
             style={styles.flatList}
         />
     );

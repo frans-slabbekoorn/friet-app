@@ -1,23 +1,34 @@
+// Package imports
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Image, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { v4 as uuid } from 'uuid';
-import image from '../../functions/image';
+
+// Function imports
+import image from '@functions/image';
+
+// Style imports
 import styles from './styles';
 
 interface Props {
     title: string;
     defaultValue: string[];
     editable: boolean;
-    onValueChange: (val: string[]) => void;
+    onValueChange?: (val: string[]) => void;
 }
 
+/**
+ * Tags component
+ *
+ * @param { Props }
+ * @returns { JSX.Element }
+ */
 const Tags: FC<Props> = ({ title, defaultValue, editable, onValueChange }) => {
     const [tags, setTags] = useState<string[]>([]);
     const tagInputRef = useRef<TextInput>(null);
 
     useEffect(() => {
         setTags(defaultValue || []);
-    }, []);
+    }, [defaultValue]);
 
     return (
         <View style={styles.tagsContainer}>
@@ -34,10 +45,10 @@ const Tags: FC<Props> = ({ title, defaultValue, editable, onValueChange }) => {
                             <TouchableOpacity
                                 style={editable ? styles.closeContainer : styles.hidden}
                                 onPress={() => {
-                                    const tempTags = { ...tags };
+                                    const tempTags = [...tags];
                                     tempTags.splice(i, 1);
                                     setTags(tempTags);
-                                    onValueChange(tempTags);
+                                    if (onValueChange) onValueChange(tempTags);
                                 }}>
                                 <Image
                                     source={image.miscellaneous.close}
@@ -55,7 +66,7 @@ const Tags: FC<Props> = ({ title, defaultValue, editable, onValueChange }) => {
                         onEndEditing={e => {
                             if (tagInputRef.current && e.nativeEvent.text) {
                                 tagInputRef.current.setNativeProps({ text: '' });
-                                onValueChange([...tags, e.nativeEvent.text]);
+                                if (onValueChange) onValueChange([...tags, e.nativeEvent.text]);
                                 setTags([...tags, e.nativeEvent.text]);
                             }
                         }}

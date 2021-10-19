@@ -1,27 +1,79 @@
-import 'react-native-get-random-values';
-import React, { FC, useContext, useEffect } from 'react';
+// Package imports
+import React, { FC, useContext } from 'react';
 import { Image, TextInput, TouchableOpacity, View } from 'react-native';
 import Slider from '@react-native-community/slider';
-import ReviewStars from '../ReviewStars';
-import Tags from '../Tags';
-import styles from './styles';
-import globalStyles, { Colors } from '../../styles';
-import { useTranslate } from '../../hooks/useTranslate';
-import { useSlider } from '../../hooks/useSlider';
-import Database from '../../database';
-import image from '../../functions/image';
-import { AlertContext } from '../../contexts/AlertContext';
-import { AlertProps } from '../../types/Alert';
 
-const AddSliderContent: FC = () => {
+// Component imports
+import ReviewStars from '@components/ReviewStars';
+import Tags from '@components/Tags';
+
+// Context imports
+import { AlertContext } from '@contexts/AlertContext';
+
+// Hook imports
+import { useTranslate } from '@hooks/useTranslate';
+import { useSlider } from '@hooks/useSlider';
+import { useItems } from '@hooks/useItems';
+
+// Function imports
+import image from '@functions/image';
+import { validateForm } from '@functions/validate';
+
+// Style imports
+import globalStyles from '@styles/defaults';
+import { Colors } from '@styles/variables';
+import styles from './styles';
+
+// Type imports
+import { AlertProps } from '@custom-types/Alert';
+
+// Custom imports
+import Database from '@config/database';
+
+/**
+ * AddSliderContent component
+ *
+ * Content for adding item in slider
+ * @returns { JSX.Element }
+ */
+const AddSliderContent: FC = (): JSX.Element => {
     const { language } = useTranslate();
-    const { show, setShow } = useContext(AlertContext) as AlertProps;
+    const { setShow, setTitle, setValues } = useContext(AlertContext) as AlertProps;
     const { setSliderType, updateFormState, formData } = useSlider();
+    const { refreshItems } = useItems();
     const db = new Database();
 
-    const handleSubmit = async () => {
-        await db.insertItem(formData);
+    const handleError = (key: string): void => {
+        setShow(true);
+        setTitle(language[key + 'Missing']);
+        setValues([
+            {
+                title: language.cancel,
+                onPress: () => {
+                    setSliderType('add');
+                    setShow(false);
+                },
+            },
+        ]);
         setSliderType('null');
+    };
+
+    const handleSuccess = async (): Promise<void> => {
+        await db.insertItem(formData);
+        refreshItems();
+        setSliderType('null');
+        updateFormState({
+            name: '',
+            location: '',
+            stars: 6,
+            image_url: null,
+            positives: [],
+            negatives: [],
+        });
+    };
+
+    const handleSubmit = (): void => {
+        validateForm(formData, ['name', 'location'], handleError, handleSuccess);
     };
 
     return (
@@ -50,10 +102,10 @@ const AddSliderContent: FC = () => {
                 style={styles.itemLocation}
             />
             <View style={styles.starContainer}>
-                <ReviewStars stars={formData.stars || 6} starStyle={styles.star} />
+                <ReviewStars stars={formData.stars} starStyle={styles.star} />
                 <Slider
                     step={1}
-                    value={formData.stars || 6}
+                    value={formData.stars}
                     minimumValue={0}
                     maximumValue={10}
                     maximumTrackTintColor={Colors.grey}
@@ -63,27 +115,25 @@ const AddSliderContent: FC = () => {
                     style={styles.starSlider}
                 />
             </View>
-            <Tags 
+            <Tags
                 title={language.positives}
                 defaultValue={formData.positives}
                 editable
                 onValueChange={(positives: string[]) => updateFormState({ positives })}
             />
-             <Tags 
+            <Tags
                 title={language.negatives}
                 defaultValue={formData.negatives}
                 editable
                 onValueChange={(negatives: string[]) => updateFormState({ negatives })}
             />
-            <TouchableOpacity 
-                style={{ ...globalStyles.button, ...styles.buttonPos }}
-                onPress={handleSubmit}
-            >
+            <TouchableOpacity
+                style={[globalStyles.button, styles.buttonPos]}
+                onPress={handleSubmit}>
                 <Image source={image.miscellaneous.done} style={globalStyles.buttonIcon} />
             </TouchableOpacity>
         </View>
     );
 };
-
 
 export default AddSliderContent;

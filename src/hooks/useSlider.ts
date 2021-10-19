@@ -1,5 +1,10 @@
+// Package imports
 import { useContext } from 'react';
-import { SliderContext } from '../contexts/SliderContext';
-import { SliderContent } from '../types/SliderContent';
+
+// Context imports
+import { SliderContext } from '@contexts/SliderContext';
+
+// Type imports
+import { SliderContent } from '@custom-types/Slider';
 
 export const useSlider = (): SliderContent => useContext(SliderContext);

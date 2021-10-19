@@ -1,28 +1,48 @@
+// Package imports
 import React, { FC, useEffect, useState } from 'react';
-import "react-native-get-random-values";
-import { Image, Text, View } from 'react-native';
-import Database from '../../database';
-import styles from './style';
-import ReviewStars from '../ReviewStars';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useTranslateContext } from '../../functions/TranslateContext';
-import { v4 } from 'uuid';
+import { Image, Text, View, TouchableOpacity } from 'react-native';
+import { v4 as uuid } from 'uuid';
+
+// Component imports
+import ReviewStars from '@components/ReviewStars';
+
+// Hook imports
+import { useTranslate } from '@hooks/useTranslate';
+
+// Function imports
+import image from '@functions/image';
+
+// Style imports
+import styles from './styles';
+
+// Type imports
+import { Item } from '@custom-types/Item';
+
+// Custom imports
+import Database from '@config/database';
+import Tags from '@components/Tags';
 
 interface Props {
     id?: string;
 }
 
-interface Item {
-    name?: string;
-    location?: string | null;
-    image_url?: string | null;
-    stars?: number;
-}
-
-const ViewSliderContent: FC<Props> = ({ id }) => {
-    const language = useTranslateContext();
-    const [item, setItem] = useState<Item>();
-    const [tags, setTags] = useState<string[][]>([[], []]);
+/**
+ * ViewSliderContent component
+ *
+ * @param { Props }
+ * @returns { JSX.Element }
+ */
+const ViewSliderContent: FC<Props> = ({ id }): JSX.Element => {
+    const { language } = useTranslate();
+    const [item, setItem] = useState<Item>({
+        id: '',
+        name: '',
+        location: '',
+        stars: 0,
+        image_url: '',
+        negatives: [],
+        positives: [],
+    });
     const db = new Database();
 
     useEffect(() => {
@@ -31,47 +51,24 @@ const ViewSliderContent: FC<Props> = ({ id }) => {
 
     const getItem = async (): Promise<void> => {
         if (typeof id !== 'string') return;
-
-        const itemData = await db.getItem(id);
-        setItem(itemData[0]);
-
-        itemData.shift();
-        setTags(itemData);
+        setItem(await db.getItem(id));
     };
 
     return (
         <View style={styles.viewSliderContainer}>
             <TouchableOpacity activeOpacity={0.6} style={styles.imageContainer}>
                 <Image
-                    source={require('../../assets/images/icons/default-icon.png')}
+                    source={item.image_url ? { uri: item.image_url } : image.icons.defaultIcon}
                     style={styles.image}
                 />
             </TouchableOpacity>
-            <Text style={styles.itemName}>{item?.name}</Text>
-            <Text style={styles.itemLocation}>{item?.location}</Text>
+            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.itemLocation}>{item.location}</Text>
             <View style={styles.starContainer}>
-                <ReviewStars stars={item?.stars || 0} starStyle={styles.star} />
+                <ReviewStars stars={item.stars} starStyle={styles.star} />
             </View>
-            <View style={styles.tagsContainer}>
-                <Text style={styles.tagsTitle}>{language.positives}</Text>
-                <View style={styles.tagsContent}>
-                    {tags[0].map((tag: string): JSX.Element => (
-                        <View key={v4()} style={styles.tag}>
-                            <Text style={styles.tagName}>{tag}</Text>
-                        </View>
-                    ))}
-                </View>
-            </View>
-            <View style={styles.tagsContainer}>
-                <Text style={styles.tagsTitle}>{language.negatives}</Text>
-                <View style={styles.tagsContent}>
-                    {tags[1].map((tag: string): JSX.Element => (
-                        <View key={v4()} style={styles.tag}>
-                            <Text style={styles.tagName}>{tag}</Text>
-                        </View>
-                    ))}
-                </View>
-            </View>
+            <Tags title={language.positives} editable={false} defaultValue={item.positives} />
+            <Tags title={language.negatives} editable={false} defaultValue={item.negatives} />
         </View>
     );
 };
