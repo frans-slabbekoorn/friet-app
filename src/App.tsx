@@ -1,12 +1,13 @@
 // Package imports
 import 'react-native-get-random-values';
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Platform } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 import { Modalize } from 'react-native-modalize';
 
 // Component imports
 import Home from '@screens/Home';
+import SliderContent from '@components/Sliders';
 
 // Context imports
 import { AlertContext } from '@contexts/AlertContext';
@@ -30,11 +31,11 @@ import { SliderType } from '@custom-types/Slider';
  */
 const App: FC = (): JSX.Element => {
     const ref = useRef<Modalize>(null);
+    const lockedSliders: SliderType[] = ['chooseImage'];
     const [show, setShow] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('');
     const [values, setValues] = useState<AlertOption[]>([]);
-    const [sliderContent, setSliderContent] = useState<JSX.Element | null>(null);
-    const [type, setType] = useState<SliderType>('null');
+    const [sliderType, setSliderType] = useState<SliderType>('null');
     const [isLocked, setIsLocked] = useState<boolean>(false);
     const [currentId, setCurrentId] = useState<string>('');
     const [items, setItems] = useState<Items>([]);
@@ -46,6 +47,13 @@ const App: FC = (): JSX.Element => {
         positives: [],
         negatives: [],
     });
+
+    useEffect(() => {
+        setIsLocked(lockedSliders.includes(sliderType));
+        const isNull = sliderType === 'null';
+        ref.current?.[isNull ? 'close' : 'open']();
+        isNull && setCurrentId('');
+    }, [sliderType]);
 
     return (
         <TranslateProvider>
@@ -61,11 +69,7 @@ const App: FC = (): JSX.Element => {
                 <ItemContext.Provider value={{ items, setItems, itemFormData, setItemFormData }}>
                     <SliderContext.Provider
                         value={{
-                            ref,
-                            setSliderContent,
-                            type,
-                            setType,
-                            setIsLocked,
+                            setSliderType,
                             currentId,
                             setCurrentId,
                         }}>
@@ -73,7 +77,7 @@ const App: FC = (): JSX.Element => {
                         <BlurView
                             blurType="light"
                             blurAmount={10}
-                            style={[styles.blur, { zIndex: type !== 'null' ? 1 : -1 }]}
+                            style={[styles.blur, { zIndex: sliderType !== 'null' ? 1 : -1 }]}
                             reducedTransparencyFallbackColor={Colors.white}
                         />
                         <Modalize
@@ -83,8 +87,8 @@ const App: FC = (): JSX.Element => {
                             ref={ref}
                             panGestureEnabled={!isLocked}
                             closeOnOverlayTap={!isLocked}
-                            onClosed={() => setType('null')}>
-                            {sliderContent}
+                            onClosed={() => setSliderType('null')}>
+                            <SliderContent type={sliderType} />
                         </Modalize>
                     </SliderContext.Provider>
                 </ItemContext.Provider>

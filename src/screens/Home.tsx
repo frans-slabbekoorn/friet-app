@@ -1,5 +1,5 @@
 // Package imports
-import React, { FC, useContext, useEffect } from 'react';
+import React, { FC, useContext } from 'react';
 import { Platform, KeyboardAvoidingView, StatusBar, TouchableOpacity, Image } from 'react-native';
 
 // Component imports
@@ -8,10 +8,8 @@ import CardList from '@components/CardList';
 import Alert from '@components/Alert';
 
 // Context imports
+import { SliderContext } from '@contexts/SliderContext';
 import { AlertContext } from '@contexts/AlertContext';
-
-// Hook imports
-import { useSlider } from '@hooks/useSlider';
 
 // Function imports
 import image from '@functions/image';
@@ -22,9 +20,10 @@ import { Colors } from '@styles/variables';
 
 // Type imports
 import { AlertProps } from '@custom-types/Alert';
+import { SliderContextProps } from '@custom-types/Slider';
 
 const Home: FC = (): JSX.Element => {
-    const { setSliderType } = useSlider();
+    const { setSliderType } = useContext(SliderContext) as SliderContextProps;
     const { show, title, values } = useContext(AlertContext) as AlertProps;
 
     return (

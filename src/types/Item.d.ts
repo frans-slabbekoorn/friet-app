@@ -1,13 +1,13 @@
 import { Dispatch, SetStateAction } from 'react';
 
-export interface InsertItem {
+export type InsertItem = {
     name: string;
     location: string;
     stars: number;
     image_url: string | null;
     positives: string[];
     negatives: string[];
-}
+};
 
 export type Items = {
     id: string;

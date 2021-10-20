@@ -8,11 +8,11 @@ import ReviewStars from '@components/ReviewStars';
 import Tags from '@components/Tags';
 
 // Context imports
+import { SliderContext } from '@contexts/SliderContext';
 import { AlertContext } from '@contexts/AlertContext';
 
 // Hook imports
 import { useTranslate } from '@hooks/useTranslate';
-import { useSlider } from '@hooks/useSlider';
 import { useItems } from '@hooks/useItems';
 
 // Function imports
@@ -25,7 +25,7 @@ import { Colors } from '@styles/variables';
 import styles from './styles';
 
 // Type imports
-import { SliderContentProps } from '@custom-types/Slider';
+import { SliderContextProps } from '@custom-types/Slider';
 import { AlertProps } from '@custom-types/Alert';
 
 // Custom imports
@@ -37,9 +37,10 @@ import Database from '@config/database';
  * Content for adding item in slider
  * @returns { JSX.Element }
  */
-const AddContent: FC<SliderContentProps> = ({ setSliderType }): JSX.Element => {
+const AddContent: FC = (): JSX.Element => {
     const { language } = useTranslate();
     const { setShow, setTitle, setValues } = useContext(AlertContext) as AlertProps;
+    const { setSliderType } = useContext(SliderContext) as SliderContextProps;
     const { refreshItems, itemFormData, updateFormState } = useItems();
     const db = new Database();
 

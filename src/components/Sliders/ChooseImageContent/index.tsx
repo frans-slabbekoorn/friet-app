@@ -1,27 +1,30 @@
 // Package imports
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 // Component imports
 import ChooseSliderContent from '@components/Sliders/ChooseContent';
 
+// Context imports
+import { SliderContext } from '@contexts/SliderContext';
+import { ItemContext } from '@contexts/ItemContext';
+
 // Hook imports
 import { useTranslate } from '@hooks/useTranslate';
 
 // Type imports
-import { SliderContentProps } from '@custom-types/Slider';
+import { SliderContextProps } from '@custom-types/Slider';
+import { useItems } from '@hooks/useItems';
 
 /**
  * ChooseImageContent component
  *
  * @returns { JSX.Element }
  */
-const ChooseImageContent: FC<SliderContentProps> = ({
-    updateFormState,
-    setSliderType,
-}): JSX.Element => {
+const ChooseImageContent: FC = (): JSX.Element => {
     const { language } = useTranslate();
-    // const { setSliderType, updateFormState } = useSlider();
+    const { setSliderType } = useContext(SliderContext) as SliderContextProps;
+    const { updateFormState } = useItems();
 
     const handleImageSubmit = (res: ImagePickerResponse) => {
         if (res.didCancel || res.errorCode || res.errorMessage || !res.assets) return;

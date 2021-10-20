@@ -1,11 +1,14 @@
 // Package imports
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { Image, Text, View, TouchableOpacity } from 'react-native';
 import { v4 as uuid } from 'uuid';
 
 // Component imports
 import ReviewStars from '@components/ReviewStars';
 import Tags from '@components/Tags';
+
+// Context imports
+import { SliderContext } from '@contexts/SliderContext';
 
 // Hook imports
 import { useTranslate } from '@hooks/useTranslate';
@@ -18,7 +21,6 @@ import styles from './styles';
 
 // Type imports
 import { Item } from '@custom-types/Item';
-import { SliderContentProps } from '@custom-types/Slider';
 
 // Custom imports
 import Database from '@config/database';
@@ -28,8 +30,9 @@ import Database from '@config/database';
  *
  * @returns { JSX.Element }
  */
-const ViewContent: FC<SliderContentProps> = ({ currentId }): JSX.Element => {
+const ViewContent: FC = (): JSX.Element => {
     const { language } = useTranslate();
+    const { currentId } = useContext(SliderContext);
     const [item, setItem] = useState<Item>({
         id: '',
         name: '',

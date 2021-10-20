@@ -5,9 +5,6 @@ import { TouchableOpacity, TouchableNativeFeedback, View, Text, Image } from 're
 // Component imports
 import ReviewStars from '@components/ReviewStars';
 
-// Hook imports
-import { useSlider } from '@hooks/useSlider';
-
 // Function imports
 import image from '@functions/image';
 
@@ -33,10 +30,10 @@ interface Props {
  * @returns { JSX.Element }
  */
 const Card: FC<Props> = ({ id, name, image_url, location, stars, firstItem }): JSX.Element => {
-    const { setType, setCurrentId } = useContext(SliderContext) as SliderContextProps;
+    const { setSliderType, setCurrentId } = useContext(SliderContext) as SliderContextProps;
 
     const handlePress = () => {
-        setType('view');
+        setSliderType('view');
         setCurrentId(id);
     };
 
