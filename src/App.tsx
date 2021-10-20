@@ -21,7 +21,7 @@ import { Colors } from '@styles/variables';
 
 // Type imports
 import { AlertOption } from '@custom-types/Alert';
-import { InsertItem, Items } from '@custom-types/Item';
+import { Item, Items } from '@custom-types/Item';
 import { SliderType } from '@custom-types/Slider';
 
 /**
@@ -39,7 +39,8 @@ const App: FC = (): JSX.Element => {
     const [isLocked, setIsLocked] = useState<boolean>(false);
     const [currentId, setCurrentId] = useState<string>('');
     const [items, setItems] = useState<Items>([]);
-    const [itemFormData, setItemFormData] = useState<InsertItem>({
+    const [itemFormData, setItemFormData] = useState<Item>({
+        id: '',
         name: '',
         location: '',
         stars: 6,

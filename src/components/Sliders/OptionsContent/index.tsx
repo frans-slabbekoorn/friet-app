@@ -43,7 +43,9 @@ const OptionsContent: FC = (): JSX.Element => {
             values={[
                 {
                     title: language.edit,
-                    onPress: () => {},
+                    onPress: () => {
+                        setSliderType('edit');
+                    },
                 },
                 {
                     title: language.delete,

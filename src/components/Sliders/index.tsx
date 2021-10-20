@@ -2,8 +2,9 @@
 import React, { FC, SetStateAction } from 'react';
 
 // Component imports
-import AddContent from '@components/Sliders/AddContent';
 import ViewContent from '@components/Sliders/ViewContent';
+import AddContent from '@components/Sliders/AddContent';
+import EditContent from '@components/Sliders/EditContent';
 import ChooseImageContent from '@components/Sliders/ChooseImageContent';
 import OptionsContent from '@components/Sliders/OptionsContent';
 
@@ -24,6 +25,7 @@ const SliderContent: FC<Props> = ({ type }): JSX.Element | null => {
     const sliderComponents: { [key: string]: SetStateAction<Element> } = {
         add: AddContent,
         view: ViewContent,
+        edit: EditContent,
         chooseImage: ChooseImageContent,
         options: OptionsContent,
     };

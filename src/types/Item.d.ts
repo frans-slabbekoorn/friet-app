@@ -1,14 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
 
-export type InsertItem = {
-    name: string;
-    location: string;
-    stars: number;
-    image_url: string | null;
-    positives: string[];
-    negatives: string[];
-};
-
 export type Items = {
     id: string;
     name: string;
@@ -30,6 +21,6 @@ export interface Item {
 export interface ItemContextProps {
     items: Items;
     setItems: Dispatch<SetStateAction<Items>>;
-    itemFormData: InsertItem;
-    setItemFormData: Dispatch<SetStateAction<InsertItem>>;
+    itemFormData: Item;
+    setItemFormData: Dispatch<SetStateAction<Item>>;
 }
