@@ -52,7 +52,6 @@ const App: FC = (): JSX.Element => {
         setIsLocked(lockedSliders.includes(sliderType));
         const isNull = sliderType === 'null';
         ref.current?.[isNull ? 'close' : 'open']();
-        isNull && setCurrentId('');
     }, [sliderType]);
 
     return (

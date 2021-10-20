@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from 'react';
 // Type imports
 import { InsertItem } from '@custom-types/Item';
 
-export type SliderType = 'view' | 'edit' | 'add' | 'chooseImage' | 'null';
+export type SliderType = 'view' | 'edit' | 'add' | 'chooseImage' | 'options' | 'null';
 
 export interface SliderContent {
     setSliderType: (value: SliderType) => void;

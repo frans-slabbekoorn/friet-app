@@ -9,7 +9,7 @@
   "negatives": "Minpunten",
   "positives": "Pluspunten",
   "tagExists": "Deze tag bestaat al!",
-  "sureRemove": "Weet u zeker dat u dit item wilt verwijderen?",
+  "confirmDelete": "Weet u zeker dat u dit item wilt verwijderen?",
   "noLocation": "Geen locatie",
   "itemExists": "Er bestaat al een item met deze naam!",
   "addLocation": "Voeg locatie toe",

@@ -32,8 +32,13 @@ interface Props {
 const Card: FC<Props> = ({ id, name, image_url, location, stars, firstItem }): JSX.Element => {
     const { setSliderType, setCurrentId } = useContext(SliderContext) as SliderContextProps;
 
-    const handlePress = () => {
+    const handleViewPress = () => {
         setSliderType('view');
+        setCurrentId(id);
+    };
+
+    const handleOptionsPress = () => {
+        setSliderType('options');
         setCurrentId(id);
     };
 
@@ -41,7 +46,7 @@ const Card: FC<Props> = ({ id, name, image_url, location, stars, firstItem }): J
         <TouchableOpacity
             activeOpacity={1}
             style={[styles.cardContainer, firstItem && styles.spaceCardContainer]}
-            onPress={handlePress}>
+            onPress={handleViewPress}>
             <View style={styles.card}>
                 <View style={styles.cardImageContainer}>
                     <Image
@@ -61,6 +66,7 @@ const Card: FC<Props> = ({ id, name, image_url, location, stars, firstItem }): J
                     <ReviewStars stars={stars} starStyle={styles.star} />
                 </View>
                 <TouchableNativeFeedback
+                    onPress={handleOptionsPress}
                     background={TouchableNativeFeedback.Ripple(Colors.lightGrey, true)}>
                     <View style={styles.cardOptions}>
                         <View style={styles.optionsContainer}>

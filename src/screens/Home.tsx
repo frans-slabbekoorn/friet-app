@@ -19,12 +19,12 @@ import styles from '@styles/defaults';
 import { Colors } from '@styles/variables';
 
 // Type imports
-import { AlertProps } from '@custom-types/Alert';
+import { AlertContextProps } from '@custom-types/Alert';
 import { SliderContextProps } from '@custom-types/Slider';
 
 const Home: FC = (): JSX.Element => {
     const { setSliderType } = useContext(SliderContext) as SliderContextProps;
-    const { show, title, values } = useContext(AlertContext) as AlertProps;
+    const { show, title, values } = useContext(AlertContext) as AlertContextProps;
 
     return (
         <KeyboardAvoidingView

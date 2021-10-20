@@ -26,7 +26,7 @@ import styles from './styles';
 
 // Type imports
 import { SliderContextProps } from '@custom-types/Slider';
-import { AlertProps } from '@custom-types/Alert';
+import { AlertContextProps } from '@custom-types/Alert';
 
 // Custom imports
 import Database from '@config/database';
@@ -39,7 +39,7 @@ import Database from '@config/database';
  */
 const AddContent: FC = (): JSX.Element => {
     const { language } = useTranslate();
-    const { setShow, setTitle, setValues } = useContext(AlertContext) as AlertProps;
+    const { setShow, setTitle, setValues } = useContext(AlertContext) as AlertContextProps;
     const { setSliderType } = useContext(SliderContext) as SliderContextProps;
     const { refreshItems, itemFormData, updateFormState } = useItems();
     const db = new Database();

@@ -6,7 +6,7 @@ export interface AlertOption {
     onPress: () => void;
 }
 
-export interface AlertProps {
+export interface AlertContextProps {
     show: boolean;
     setShow: Dispatch<SetStateAction<boolean>>;
     title: string;
