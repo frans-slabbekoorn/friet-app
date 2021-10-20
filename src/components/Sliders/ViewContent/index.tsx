@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 
 // Component imports
 import ReviewStars from '@components/ReviewStars';
+import Tags from '@components/Tags';
 
 // Hook imports
 import { useTranslate } from '@hooks/useTranslate';
@@ -17,22 +18,17 @@ import styles from './styles';
 
 // Type imports
 import { Item } from '@custom-types/Item';
+import { SliderContentProps } from '@custom-types/Slider';
 
 // Custom imports
 import Database from '@config/database';
-import Tags from '@components/Tags';
-
-interface Props {
-    id?: string;
-}
 
 /**
- * ViewSliderContent component
+ * ViewContent component
  *
- * @param { Props }
  * @returns { JSX.Element }
  */
-const ViewSliderContent: FC<Props> = ({ id }): JSX.Element => {
+const ViewContent: FC<SliderContentProps> = ({ currentId }): JSX.Element => {
     const { language } = useTranslate();
     const [item, setItem] = useState<Item>({
         id: '',
@@ -47,11 +43,11 @@ const ViewSliderContent: FC<Props> = ({ id }): JSX.Element => {
 
     useEffect(() => {
         getItem();
-    }, [id]);
+    }, [currentId]);
 
     const getItem = async (): Promise<void> => {
-        if (typeof id !== 'string') return;
-        setItem(await db.getItem(id));
+        if (typeof currentId !== 'string') return;
+        setItem(await db.getItem(currentId));
     };
 
     return (
@@ -73,4 +69,4 @@ const ViewSliderContent: FC<Props> = ({ id }): JSX.Element => {
     );
 };
 
-export default ViewSliderContent;
+export default ViewContent;

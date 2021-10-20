@@ -3,20 +3,25 @@ import React, { FC } from 'react';
 import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 // Component imports
-import ChooseSliderContent from '@components/ChooseSliderContent';
+import ChooseSliderContent from '@components/Sliders/ChooseContent';
 
 // Hook imports
 import { useTranslate } from '@hooks/useTranslate';
-import { useSlider } from '@hooks/useSlider';
+
+// Type imports
+import { SliderContentProps } from '@custom-types/Slider';
 
 /**
  * ChooseImageContent component
- * 
+ *
  * @returns { JSX.Element }
  */
-const ChooseImageContent: FC = (): JSX.Element => {
+const ChooseImageContent: FC<SliderContentProps> = ({
+    updateFormState,
+    setSliderType,
+}): JSX.Element => {
     const { language } = useTranslate();
-    const { setSliderType, updateFormState } = useSlider();
+    // const { setSliderType, updateFormState } = useSlider();
 
     const handleImageSubmit = (res: ImagePickerResponse) => {
         if (res.didCancel || res.errorCode || res.errorMessage || !res.assets) return;
@@ -50,7 +55,7 @@ const ChooseImageContent: FC = (): JSX.Element => {
                     warning: true,
                     onPress: () => {
                         setSliderType('add');
-                    }
+                    },
                 },
             ]}
         />

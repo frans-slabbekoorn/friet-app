@@ -18,7 +18,7 @@ interface Props {
 
 /**
  * ChooseSliderContent component
- * 
+ *
  * @param { Props }
  * @returns { JSX.Element }
  */
@@ -27,7 +27,7 @@ const ChooseSliderContent: FC<Props> = ({ values }): JSX.Element => {
         <View style={styles.chooseSliderContainer}>
             {values.map((value: ChooseValue) => (
                 <TouchableOpacity key={uuid()} onPress={value.onPress} style={styles.item}>
-                    <Text style={[ styles.itemText, value.warning && styles.warning]}>
+                    <Text style={[styles.itemText, value.warning && styles.warning]}>
                         {value.title}
                     </Text>
                 </TouchableOpacity>

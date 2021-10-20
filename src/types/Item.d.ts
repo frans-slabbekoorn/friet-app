@@ -1,4 +1,4 @@
-import React from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 export interface InsertItem {
     name: string;
@@ -29,5 +29,7 @@ export interface Item {
 
 export interface ItemContextProps {
     items: Items;
-    setItems: (items: Items) => void;
+    setItems: Dispatch<SetStateAction<Items>>;
+    itemFormData: InsertItem;
+    setItemFormData: Dispatch<SetStateAction<InsertItem>>;
 }

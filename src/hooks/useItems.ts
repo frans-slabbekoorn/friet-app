@@ -16,7 +16,7 @@ import Database from '@config/database';
  * @returns { { refreshItems, filterItems } }
  */
 const useItems = () => {
-    const { setItems } = useContext(ItemContext) as ItemContextProps;
+    const { setItems, itemFormData, setItemFormData } = useContext(ItemContext) as ItemContextProps;
     const db = new Database();
 
     const refreshItems = async () => {
@@ -29,7 +29,11 @@ const useItems = () => {
         setItems(items);
     };
 
-    return { refreshItems, filterItems };
+    const updateFormState = (mutatableObject: { [key: string]: unknown }): void => {
+        setItemFormData({ ...itemFormData, ...mutatableObject });
+    };
+
+    return { refreshItems, filterItems, itemFormData, updateFormState };
 };
 
 export { useItems };

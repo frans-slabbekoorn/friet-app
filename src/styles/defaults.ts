@@ -29,4 +29,17 @@ export default StyleSheet.create({
     addIcon: {
         transform: [{ rotate: '45deg' }],
     },
+    blur: {
+        flex: 1,
+        position: 'absolute',
+        right: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.1)',
+    },
+    transparent: {
+        backgroundColor: 'rgba(0,0,0,0)',
+    },
 });

@@ -1,5 +1,5 @@
 // Package imports
-import React from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 export interface AlertOption {
     title: string;
@@ -8,9 +8,9 @@ export interface AlertOption {
 
 export interface AlertProps {
     show: boolean;
-    setShow: React.Dispatch<React.SetStateAction<boolean>>;
+    setShow: Dispatch<SetStateAction<boolean>>;
     title: string;
-    setTitle: React.Dispatch<React.SetStateAction<string>>;
+    setTitle: Dispatch<SetStateAction<string>>;
     values: AlertOption[];
-    setValues: React.Dispatch<React.SetStateAction<AlertOption[]>>;
+    setValues: Dispatch<SetStateAction<AlertOption[]>>;
 }

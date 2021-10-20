@@ -25,22 +25,22 @@ import { Colors } from '@styles/variables';
 import styles from './styles';
 
 // Type imports
+import { SliderContentProps } from '@custom-types/Slider';
 import { AlertProps } from '@custom-types/Alert';
 
 // Custom imports
 import Database from '@config/database';
 
 /**
- * AddSliderContent component
+ * AddContent component
  *
  * Content for adding item in slider
  * @returns { JSX.Element }
  */
-const AddSliderContent: FC = (): JSX.Element => {
+const AddContent: FC<SliderContentProps> = ({ setSliderType }): JSX.Element => {
     const { language } = useTranslate();
     const { setShow, setTitle, setValues } = useContext(AlertContext) as AlertProps;
-    const { setSliderType, updateFormState, formData } = useSlider();
-    const { refreshItems } = useItems();
+    const { refreshItems, itemFormData, updateFormState } = useItems();
     const db = new Database();
 
     const handleError = (key: string): void => {
@@ -59,7 +59,7 @@ const AddSliderContent: FC = (): JSX.Element => {
     };
 
     const handleSuccess = async (): Promise<void> => {
-        await db.insertItem(formData);
+        await db.insertItem(itemFormData);
         refreshItems();
         setSliderType('null');
         updateFormState({
@@ -73,7 +73,7 @@ const AddSliderContent: FC = (): JSX.Element => {
     };
 
     const handleSubmit = (): void => {
-        validateForm(formData, ['name', 'location'], handleError, handleSuccess);
+        validateForm(itemFormData, ['name', 'location'], handleError, handleSuccess);
     };
 
     return (
@@ -84,28 +84,30 @@ const AddSliderContent: FC = (): JSX.Element => {
                 onPress={() => setSliderType('chooseImage')}>
                 <Image
                     source={
-                        formData.image_url ? { uri: formData.image_url } : image.icons.defaultIcon
+                        itemFormData.image_url
+                            ? { uri: itemFormData.image_url }
+                            : image.icons.defaultIcon
                     }
                     style={styles.image}
                 />
             </TouchableOpacity>
             <TextInput
-                defaultValue={formData.name}
+                defaultValue={itemFormData.name}
                 placeholder={language.addName}
                 onChangeText={(name: string) => updateFormState({ name })}
                 style={styles.itemName}
             />
             <TextInput
-                defaultValue={formData.location}
+                defaultValue={itemFormData.location}
                 placeholder={language.addLocation}
                 onChangeText={(location: string) => updateFormState({ location })}
                 style={styles.itemLocation}
             />
             <View style={styles.starContainer}>
-                <ReviewStars stars={formData.stars} starStyle={styles.star} />
+                <ReviewStars stars={itemFormData.stars} starStyle={styles.star} />
                 <Slider
                     step={1}
-                    value={formData.stars}
+                    value={itemFormData.stars}
                     minimumValue={0}
                     maximumValue={10}
                     maximumTrackTintColor={Colors.grey}
@@ -117,13 +119,13 @@ const AddSliderContent: FC = (): JSX.Element => {
             </View>
             <Tags
                 title={language.positives}
-                defaultValue={formData.positives}
+                defaultValue={itemFormData.positives}
                 editable
                 onValueChange={(positives: string[]) => updateFormState({ positives })}
             />
             <Tags
                 title={language.negatives}
-                defaultValue={formData.negatives}
+                defaultValue={itemFormData.negatives}
                 editable
                 onValueChange={(negatives: string[]) => updateFormState({ negatives })}
             />
@@ -136,4 +138,4 @@ const AddSliderContent: FC = (): JSX.Element => {
     );
 };
 
-export default AddSliderContent;
+export default AddContent;

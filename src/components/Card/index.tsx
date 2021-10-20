@@ -1,5 +1,5 @@
 // Package imports
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { TouchableOpacity, TouchableNativeFeedback, View, Text, Image } from 'react-native';
 
 // Component imports
@@ -14,6 +14,8 @@ import image from '@functions/image';
 // Style imports
 import { Colors } from '@styles/variables';
 import styles from './styles';
+import { SliderContext } from '@contexts/SliderContext';
+import { SliderContextProps } from '@custom-types/Slider';
 
 interface Props {
     id: string;
@@ -31,10 +33,10 @@ interface Props {
  * @returns { JSX.Element }
  */
 const Card: FC<Props> = ({ id, name, image_url, location, stars, firstItem }): JSX.Element => {
-    const { setSliderType, setCurrentId } = useSlider();
+    const { setType, setCurrentId } = useContext(SliderContext) as SliderContextProps;
 
     const handlePress = () => {
-        setSliderType('view');
+        setType('view');
         setCurrentId(id);
     };
 
