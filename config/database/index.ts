@@ -3,22 +3,12 @@ import { Alert } from 'react-native';
 import { v4 as uuid } from 'uuid';
 
 // Type imports
-import { InsertItem } from '@custom-types/Item';
+import { Item } from '@custom-types/Item';
 
 // Custom imports
 import initial from './initial';
 import executeMigrations from './migrations';
 import { search, insert, deleteRow, update } from './query';
-
-interface Item {
-    id: string;
-    name: string;
-    location: string;
-    stars: number;
-    image_url: string | null;
-    positives: string[];
-    negatives: string[];
-}
 
 /**
  * Database Class
@@ -134,7 +124,7 @@ export default class Database {
      *
      * @param { array, array, array }
      */
-    insertItem = async (item: InsertItem): Promise<void> => {
+    insertItem = async (item: Item): Promise<void> => {
         const checkForItem: object[] = await search({
             table: 'items',
             select: ['id'],
@@ -186,73 +176,56 @@ export default class Database {
      * @param { array, array, array }
      */
     changeItem = async (item: Item): Promise<any> => {
-        try {
-            await update(
-                'items',
-                {
-                    name: item.name,
-                    location: item.location,
-                    image_url: item.image_url,
-                    stars: item.stars,
-                },
-                { id: item.id },
-            );
-            item.positives.forEach(async (positive: string) => {
-                const positiveExists: any[] = await search({
-                    table: 'positives',
-                    select: ['positive'],
-                    where: { items: item.id, positive: positive },
-                });
+        await update(
+            'items',
+            {
+                name: item.name,
+                location: item.location,
+                image_url: item.image_url,
+                stars: item.stars,
+            },
+            { id: item.id },
+        );
 
-                positiveExists.length > 0
-                    ? await update(
-                          'positives',
-                          {
-                              positive: positive,
-                          },
-                          {
-                              items_id: item.id,
-                              positive: positiveExists[0].positive,
-                          },
-                      )
-                    : await insert('positives', [
-                          {
-                              id: uuid(),
-                              items_id: item.id,
-                              positive: positive,
-                          },
-                      ]);
+        await this.changeTags(item, item.positives, { table: 'positives', column: 'positive' });
+        await this.changeTags(item, item.negatives, { table: 'negatives', column: 'negative' });
+    };
+
+    /**
+     * changeTags Method
+     *
+     * @param { Item, string[], string }
+     */
+    changeTags = async (item: Item, tags: string[], type: { table: string; column: string }) => {
+        const existingTags = await search({
+            table: type.table,
+        });
+        existingTags.forEach(async tagType => {
+            if (!tags.includes(tagType[type.column])) {
+                await deleteRow(type.table, {
+                    items_id: item.id,
+                    [type.column]: tagType[type.column],
+                });
+            }
+        });
+
+        tags.forEach(async (tag: string): Promise<void> => {
+            const tagExists: any[] = await search({
+                table: type.table,
+                select: [type.column],
+                where: { items_id: item.id, [type.column]: tag },
             });
 
-            item.negatives.forEach(async (negative: string): Promise<void> => {
-                const negativeExists: any[] = await search({
-                    table: 'negatives',
-                    select: ['negative'],
-                    where: { items: item.id, negative: negative },
-                });
-
-                negativeExists.length > 0
-                    ? await update(
-                          'negatives',
-                          {
-                              negative: negative,
-                          },
-                          {
-                              items_id: item.id,
-                              negative: negativeExists[0].negative,
-                          },
-                      )
-                    : await insert('negatives', [
-                          {
-                              id: uuid(),
-                              items_id: item.id,
-                              negative: negative,
-                          },
-                      ]);
-            });
-        } catch {
-            Alert.alert('');
-        }
+            if (tagExists.length === 0) {
+                await insert(type.table, [
+                    {
+                        id: uuid(),
+                        items_id: item.id,
+                        [type.column]: tag,
+                    },
+                ]);
+            }
+        });
     };
 
     /**
