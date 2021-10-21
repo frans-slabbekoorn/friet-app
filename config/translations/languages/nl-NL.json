@@ -5,19 +5,12 @@
   "search": "Zoeken...",
   "delete": "Verwijderen",
   "addName": "Voeg naam toe",
-  "noResult": "Geen resultaat",
   "negatives": "Minpunten",
-  "positives": "Pluspunten",
-  "tagExists": "Deze tag bestaat al!",
   "confirmDelete": "Weet u zeker dat u dit item wilt verwijderen?",
-  "noLocation": "Geen locatie",
-  "itemExists": "Er bestaat al een item met deze naam!",
   "addLocation": "Voeg locatie toe",
-  "errorTryAgain": "Er is een fout opgetreden! Probeer het opnieuw",
-  "noNameSubmitted": "Zorg dat een item een naam heeft!",
   "takePhoto": "Foto nemen",
   "choosePhoto": "Foto uit gallerij",
   "cancel": "Annuleren",
   "nameMissing": "Naam is niet ingevuld",
-  "locationMissing": "Loction is niet ingevuld"
+  "locationMissing": "Locatie is niet ingevuld"
 }

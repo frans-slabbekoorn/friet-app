@@ -29,16 +29,16 @@ export default class Database {
     /**
      * GetItem Method
      *
-     * Fetches 1 item based on uuid
+     * Fetches 1 item based on id
      * @param { string }
      * @returns { array } item
      */
-    getItem = async (uuid: string): Promise<any> => {
-        if (!uuid) return {};
+    getItem = async (id: string): Promise<any> => {
+        if (!id) return {};
 
         const item: any = await search({
             table: 'items',
-            where: { id: uuid },
+            where: { id },
         });
         if (item.length === 0) return {};
 
@@ -96,7 +96,7 @@ export default class Database {
             },
         });
 
-        let itemsByPositives = [];
+        let itemsByPositives: { [key: string]: string | number }[] = [];
         for (let i = 0; i < idsByPositives.length; i++) {
             const itemByPositives: any = await search({
                 table: 'items',
@@ -116,7 +116,19 @@ export default class Database {
         }
         itemsByPositives = itemsByPositives.concat(items);
 
-        return itemsByPositives.sort((a, b): number => (a.stars > b.stars ? -1 : 1));
+        const uniqueArray: { [key: string]: string | number }[] = itemsByPositives.filter(
+            (item, index) => {
+                const _item = JSON.stringify(item);
+                return (
+                    index ===
+                    itemsByPositives.findIndex(obj => {
+                        return JSON.stringify(obj) === _item;
+                    })
+                );
+            },
+        );
+
+        return uniqueArray.sort((a, b): number => (a.stars > b.stars ? -1 : 1));
     };
 
     /**
@@ -133,40 +145,35 @@ export default class Database {
         if (checkForItem.length > 0) return;
 
         const id: string = uuid();
-        try {
-            await insert('items', [
+        await insert('items', [
+            {
+                id,
+                name: item.name,
+                location: item.location,
+                image_url: item.image_url,
+                stars: item.stars,
+            },
+        ]);
+
+        item.positives.forEach(async (positive: string): Promise<void> => {
+            await insert('positives', [
                 {
-                    id,
-                    name: item.name,
-                    location: item.location,
-                    image_url: item.image_url,
-                    stars: item.stars,
+                    id: uuid(),
+                    items_id: id,
+                    positive: positive,
                 },
             ]);
+        });
 
-            item.positives.forEach(async (positive: string): Promise<void> => {
-                await insert('positives', [
-                    {
-                        id: uuid(),
-                        items_id: id,
-                        positive: positive,
-                    },
-                ]);
-            });
-
-            item.negatives.forEach(async (negative: string): Promise<void> => {
-                await insert('negatives', [
-                    {
-                        id: uuid(),
-                        items_id: id,
-                        negative: negative,
-                    },
-                ]);
-            });
-        } catch {
-            Alert.alert('');
-            return;
-        }
+        item.negatives.forEach(async (negative: string): Promise<void> => {
+            await insert('negatives', [
+                {
+                    id: uuid(),
+                    items_id: id,
+                    negative: negative,
+                },
+            ]);
+        });
     };
 
     /**

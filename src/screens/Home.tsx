@@ -6,6 +6,7 @@ import { Platform, KeyboardAvoidingView, StatusBar, TouchableOpacity, Image } fr
 import Header from '@components/Header';
 import CardList from '@components/CardList';
 import Alert from '@components/Alert';
+import FloatingButton from '@components/FloatingButton';
 
 // Context imports
 import { SliderContext } from '@contexts/SliderContext';
@@ -22,6 +23,11 @@ import { Colors } from '@styles/variables';
 import { AlertContextProps } from '@custom-types/Alert';
 import { SliderContextProps } from '@custom-types/Slider';
 
+/**
+ * Home screen
+ *
+ * @returns { JSX.Element }
+ */
 const Home: FC = (): JSX.Element => {
     const { setSliderType } = useContext(SliderContext) as SliderContextProps;
     const { show, title, values } = useContext(AlertContext) as AlertContextProps;
@@ -33,14 +39,13 @@ const Home: FC = (): JSX.Element => {
             <Header />
             <Alert show={show} title={title} values={values} />
             <CardList />
-            <TouchableOpacity
-                style={[styles.button, styles.buttonPos]}
-                onPress={() => setSliderType('add')}>
-                <Image
-                    source={image.miscellaneous.close}
-                    style={[styles.buttonIcon, styles.addIcon]}
-                />
-            </TouchableOpacity>
+            <FloatingButton type="search" bottom={132} source={image.miscellaneous.search} />
+            <FloatingButton
+                childrenStyle={{ transform: [{ rotate: '45deg' }] }}
+                source={image.miscellaneous.close}
+                bottom={40}
+                onPress={() => setSliderType('add')}
+            />
             <StatusBar backgroundColor={Colors.yellow} barStyle="dark-content" />
         </KeyboardAvoidingView>
     );
