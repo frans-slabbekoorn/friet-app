@@ -40,7 +40,9 @@ import Database from '@config/database';
 const EditContent: FC = (): JSX.Element => {
     const { language } = useTranslate();
     const { setShow, setTitle, setValues } = useContext(AlertContext) as AlertContextProps;
-    const { currentId, setSliderType } = useContext(SliderContext) as SliderContextProps;
+    const { currentId, setSliderType, previousSliderType } = useContext(
+        SliderContext,
+    ) as SliderContextProps;
     const { refreshItems, itemFormData, updateFormState } = useItems();
     const db = new Database();
 
@@ -49,6 +51,12 @@ const EditContent: FC = (): JSX.Element => {
     }, []);
 
     const fetchItem = async () => {
+        if (previousSliderType === 'chooseImage') {
+            return updateFormState({
+                ...(await db.getItem(currentId)),
+                image_url: itemFormData.image_url,
+            });
+        }
         updateFormState(await db.getItem(currentId));
     };
 

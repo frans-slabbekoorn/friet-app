@@ -23,7 +23,7 @@ import { useItems } from '@hooks/useItems';
  */
 const ChooseImageContent: FC = (): JSX.Element => {
     const { language } = useTranslate();
-    const { setSliderType } = useContext(SliderContext) as SliderContextProps;
+    const { setSliderType, previousSliderType } = useContext(SliderContext) as SliderContextProps;
     const { updateFormState } = useItems();
 
     const handleImageSubmit = (res: ImagePickerResponse) => {
@@ -31,7 +31,7 @@ const ChooseImageContent: FC = (): JSX.Element => {
 
         if (res.assets.length) {
             updateFormState({ image_url: res.assets[0].uri || null });
-            setSliderType('add');
+            setSliderType(previousSliderType);
         }
     };
 
@@ -57,7 +57,7 @@ const ChooseImageContent: FC = (): JSX.Element => {
                     title: language.cancel,
                     warning: true,
                     onPress: () => {
-                        setSliderType('add');
+                        setSliderType(previousSliderType);
                     },
                 },
             ]}

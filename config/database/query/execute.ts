@@ -25,7 +25,7 @@ interface SQLiteResult {
 const execute = (
     sql: string,
     params: any[] = [],
-    databaseName: string = 'local_frietapp',
+    databaseName: string = 'local_frietreviews',
 ): Promise<Object[]> => {
     const db: any = openDatabase(databaseName);
     return new Promise((resolve: any, reject: (reason?: any) => void): void => {

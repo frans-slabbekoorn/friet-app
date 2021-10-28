@@ -22,4 +22,16 @@ export default StyleSheet.create({
     transparent: {
         backgroundColor: 'rgba(0,0,0,0)',
     },
+    button: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 64,
+        height: 64,
+        borderRadius: 64 / 2,
+        backgroundColor: Colors.yellow,
+    },
+    buttonIcon: {
+        width: 32,
+        height: 32,
+    },
 });

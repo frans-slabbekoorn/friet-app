@@ -35,7 +35,9 @@ const App: FC = (): JSX.Element => {
     const [show, setShow] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('');
     const [values, setValues] = useState<AlertOption[]>([]);
-    const [sliderType, setSliderType] = useState<SliderType>('null');
+    const [type, setType] = useState<SliderType>('null');
+    const [isOpened, setIsOpened] = useState<boolean>(false);
+    const [previousSliderType, setPreviousSliderType] = useState<SliderType>('null');
     const [isLocked, setIsLocked] = useState<boolean>(false);
     const [currentId, setCurrentId] = useState<string>('');
     const [items, setItems] = useState<Items>([]);
@@ -49,11 +51,17 @@ const App: FC = (): JSX.Element => {
         negatives: [],
     });
 
-    useEffect(() => {
-        setIsLocked(lockedSliders.includes(sliderType));
-        const isNull = sliderType === 'null';
-        ref.current?.[isNull ? 'close' : 'open']();
-    }, [sliderType]);
+    useEffect(() => console.log(itemFormData), [itemFormData]);
+
+    const setSliderType = (newType: SliderType) => {
+        setPreviousSliderType(type);
+        setType(newType);
+        setIsLocked(lockedSliders.includes(newType));
+        if (newType === 'null' && isOpened) {
+            return ref.current?.close();
+        }
+        ref.current?.open();
+    };
 
     return (
         <TranslateProvider>
@@ -70,6 +78,7 @@ const App: FC = (): JSX.Element => {
                     <SliderContext.Provider
                         value={{
                             setSliderType,
+                            previousSliderType,
                             currentId,
                             setCurrentId,
                         }}>
@@ -77,7 +86,7 @@ const App: FC = (): JSX.Element => {
                         <BlurView
                             blurType="light"
                             blurAmount={10}
-                            style={[styles.blur, { zIndex: sliderType !== 'null' ? 1 : -1 }]}
+                            style={[styles.blur, { zIndex: type !== 'null' ? 1 : -1 }]}
                             reducedTransparencyFallbackColor={Colors.white}
                         />
                         <Modalize
@@ -87,8 +96,10 @@ const App: FC = (): JSX.Element => {
                             ref={ref}
                             panGestureEnabled={!isLocked}
                             closeOnOverlayTap={!isLocked}
+                            onOpened={() => setIsOpened(true)}
+                            onClose={() => setIsOpened(false)}
                             onClosed={() => setSliderType('null')}>
-                            <SliderContent type={sliderType} />
+                            <SliderContent type={type} />
                         </Modalize>
                     </SliderContext.Provider>
                 </ItemContext.Provider>
