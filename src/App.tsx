@@ -51,8 +51,6 @@ const App: FC = (): JSX.Element => {
         negatives: [],
     });
 
-    useEffect(() => console.log(itemFormData), [itemFormData]);
-
     const setSliderType = (newType: SliderType) => {
         setPreviousSliderType(type);
         setType(newType);

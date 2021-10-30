@@ -1,7 +1,7 @@
 // Package imports
 import React, { FC, useContext } from 'react';
 import { Image, TextInput, TouchableOpacity, View } from 'react-native';
-import Slider from '@react-native-community/slider';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 // Component imports
 import ReviewStars from '@components/ReviewStars';
@@ -95,27 +95,31 @@ const AddContent: FC = (): JSX.Element => {
             <TextInput
                 defaultValue={itemFormData.name}
                 placeholder={language.addName}
-                onChangeText={(name: string) => updateFormState({ name })}
+                onEndEditing={({ nativeEvent: { text } }) => updateFormState({ name: text })}
                 style={styles.itemName}
             />
             <TextInput
                 defaultValue={itemFormData.location}
                 placeholder={language.addLocation}
-                onChangeText={(location: string) => updateFormState({ location })}
+                onEndEditing={({ nativeEvent: { text } }) => updateFormState({ location: text })}
                 style={styles.itemLocation}
             />
             <View style={styles.starContainer}>
                 <ReviewStars stars={itemFormData.stars} starStyle={styles.star} />
-                <Slider
-                    step={1}
-                    value={itemFormData.stars}
-                    minimumValue={0}
-                    maximumValue={10}
-                    maximumTrackTintColor={Colors.grey}
-                    minimumTrackTintColor={Colors.grey}
-                    thumbTintColor={Colors.black}
-                    onValueChange={stars => stars > 0 && updateFormState({ stars })}
-                    style={styles.starSlider}
+                <MultiSlider
+                    values={[itemFormData.stars]}
+                    sliderLength={250}
+                    onValuesChangeFinish={(values: number[]) =>
+                        updateFormState({ stars: values[0] > 0 ? values[0] : 1 })
+                    }
+                    selectedStyle={{ backgroundColor: Colors.grey }}
+                    markerStyle={{ backgroundColor: Colors.black }}
+                    customMarker={() => (
+                        <View style={styles.sliderMarkerContainer}>
+                            <View style={styles.sliderMarker} />
+                        </View>
+                    )}
+                    markerContainerStyle={styles.sliderContainerStyle}
                 />
             </View>
             <Tags

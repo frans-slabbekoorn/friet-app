@@ -43,6 +43,14 @@ export default StyleSheet.create({
         fontSize: 13,
         color: Colors.black,
     },
+    tagNameAdd: {
+        paddingVertical: 0,
+        paddingHorizontal: 10,
+        paddingTop: 13 / 4,
+        fontFamily: fonts.poppins.regular,
+        fontSize: 13,
+        color: Colors.black,
+    },
     closeContainer: {
         justifyContent: 'center',
         alignItems: 'center',

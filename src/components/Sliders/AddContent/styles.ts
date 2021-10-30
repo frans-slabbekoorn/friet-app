@@ -22,6 +22,22 @@ export default StyleSheet.create({
     starSlider: {
         width: 250,
     },
+    sliderContainerStyle: {
+        width: 50,
+        height: 50,
+    },
+    sliderMarkerContainer: {
+        width: 60,
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    sliderMarker: {
+        height: 10,
+        width: 10,
+        borderRadius: 5,
+        backgroundColor: Colors.black,
+    },
     imageContainer: {
         justifyContent: 'center',
         alignItems: 'center',
