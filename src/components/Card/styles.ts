@@ -1,5 +1,5 @@
 // Package imports
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 // Style imports
 import { Colors, fonts } from '@styles/variables';
@@ -11,7 +11,7 @@ export default StyleSheet.create({
         paddingVertical: 13,
     },
     spaceCardContainer: {
-        marginTop: '30%',
+        marginTop: Dimensions.get('window').height / 5,
     },
     card: {
         height: '100%',

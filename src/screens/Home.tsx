@@ -1,6 +1,6 @@
 // Package imports
 import React, { FC, useContext } from 'react';
-import { Platform, KeyboardAvoidingView, StatusBar, TouchableOpacity, Image } from 'react-native';
+import { Platform, KeyboardAvoidingView, StatusBar } from 'react-native';
 
 // Component imports
 import Header from '@components/Header';

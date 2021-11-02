@@ -62,7 +62,7 @@ const Tags: FC<Props> = ({ title, defaultValue, editable, onValueChange }) => {
                     <TextInput
                         ref={tagInputRef}
                         placeholder="..."
-                        style={styles.tagName}
+                        style={styles.tagNameAdd}
                         onEndEditing={e => {
                             if (tagInputRef.current && e.nativeEvent.text) {
                                 tagInputRef.current.setNativeProps({ text: '' });
