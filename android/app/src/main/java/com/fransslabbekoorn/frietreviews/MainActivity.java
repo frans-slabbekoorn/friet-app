@@ -1,4 +1,4 @@
-package com.frietapp;
+package com.fransslabbekoorn.frietreviews;
 
 import com.facebook.react.ReactActivity;
 
